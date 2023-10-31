@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# SLURM Options
+
+#SBATCH --partition=carl.p
+#SBATCH --job-name=WMFace_Test
+#SBATCH --nodes=1
+#SBATCH --ntasks=1                            		
+#SBATCH --mem=48G
+#SBATCH --time=48:00:00			                # one participant analysis takes.... 1:30 hours. 
+#SBATCH --output=sub-_track_slurm.%j.out
+#SBATCH --error=sub-_track_slurm.%j.err
+#SBATCH --array=1-36%36		                    	# run 2 participants at once in the array 
+#SBATCH --mail-type=BEGIN,END,FAIL,TIME_LIMIT_50,ARRAY_TASKS
+#SBATCH --mail-user=japneet.kaur.bhatia@uol.de
+
+
+echo "--- $SLURM_ARRAY_TASK_ID"
+
+echo " ----------- STEP ii. Loading modules " 
+module load hpc-env/8.3
+module load FSL
+module load ConnectomeWorkbench
+
+
+echo " ----------- STEP iii. Setting global variables and create the ROI directory " 
+root_dir=$WORK		 						        # location var for files, ROIs, results, data & seed_target ROIs
+files_dir=/gss/work/seja1403/files							        # location of ENA50, config file, .cnf files, scripts 
+data_dir=${root_dir}/pp_data/dHCP/second_release				# location var for partic data - anat, diffusion 
+results=${root_dir}/results							# location variable for the results directory  
+ENA=${files_dir}/ENA50					  		        # location variable for the ENA atlas 
+
+echo " ----------- STEP iv. Setting ROI dir variables " 
+roi=${root_dir}/ROI  									                # ROI root folder 
+roileft=${roi}/ROIleft							                 		# ROIs extracted of the left hemisphere 
+roiright=${roi}/ROIright								          	# ROIs extracted of the right hemisphere
+			
+
+echo " ----------- STEP v. Extract subject ID and session ID using the participants.csv file " 	
+cd ${files_dir}
+
+line=$(awk "NR==$((SLURM_ARRAY_TASK_ID +1))" ${files_dir}/SUB_PP_gender.csv)
+subj_id=$(printf $line | cut -f1 --delimiter=',')
+ses_id=$(printf $line | cut -f2 --delimiter=',')    
+
+echo " ----------- STEP vi.  Copying the vars to the next script " 
+$files_dir/processing.sh $subj_id $ses_id $data_dir $root_dir $results $ENA $files_dir $roileft $roiright
+
+
+echo " --------------------------------------------------------------------------------------------------- " 
+echo " --------------------------------------------------------------------------------------------------- " 
+echo " ---------------------------------- ANALYSIS 1 SUCCESSFUL ------------------------------------------ " 
+echo " --------------------------------------------------------------------------------------------------- " 
+echo " --------------------------------------------------------------------------------------------------- " 
