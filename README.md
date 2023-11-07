@@ -9,4 +9,5 @@
 
 ### Script description: 
 #### 1. directorysetter.job - setting directories to extract data 
-#### 2. 
+#### 2. roi.sh - extracting ROIs given above to conduct the probabilistic tractography 
+#### 3. 
