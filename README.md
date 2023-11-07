@@ -1,4 +1,4 @@
-# Diffusion Tesnsor Imaging (DTI) Probabilistic Tractography Analysis
+## Diffusion Tesnsor Imaging (DTI) Probabilistic Tractography Analysis
 **Project:** White Matter Connectivity Differences in Face Processing Cortical Brain Network Between Preterm and Term Born Neonates. 
 This repository focuses on extracting regions of interest from the Edinburg Neonatal Atlas (ENA), matching the regions of interest with 
 Edinburg Neonatal Atlas scans and conducting probabilistic tractography.
