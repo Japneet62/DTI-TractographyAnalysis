@@ -10,4 +10,5 @@ Edinburg Neonatal Atlas scans and conducting probabilistic tractography.
 #### Poster: https://Japneet62.github.io/DTI_Probabilistic_Tractography_Analysis/WMtarctograpy_poster_Japneet_Bhatia.pdf
 
 ### Script description: 
-#### 1. 
+#### 1. directorysetter.job - setting directories to extract data 
+#### 2. 
